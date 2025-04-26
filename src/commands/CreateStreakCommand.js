@@ -16,6 +16,12 @@ export async function CreateStreakCommand(client, interaction) {
     const streakDocWithSameName = await database.collection("streaks").findOne({ name });
 
     if (streakDocWithSameName) {
+        const embed = new EmbedBuilder()
+            .setTitle("Error :x:")
+            .setDescription(`You already have a streak named \`${name}\`!`)
+            .setTimestamp()
+            .setColor(BOT_EMBED_COLOR)
+    
         await interaction.reply({"embeds": [embed], "ephemeral": true});
         return;
     }
