@@ -6,6 +6,8 @@ import database from "../database.js";
 import { EmbedBuilder } from 'discord.js';
 import { negativeStreakErrorEmbed } from '../prebuiltEmbeds.js';
 
+const { BOT_EMBED_COLOR } = process.env;
+
 export async function CreateStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value;
@@ -34,6 +36,7 @@ export async function CreateStreakCommand(client, interaction) {
         .setTitle("Streak Created :flex:")
         .setDescription(`Streak \`${name}\` created for ${interaction.user} and is currently set to \`${startingDays}\` days.`)
         .setTimestamp()
+        .setColor(BOT_EMBED_COLOR)
 
     await interaction.reply({"embeds": [embed]});
 

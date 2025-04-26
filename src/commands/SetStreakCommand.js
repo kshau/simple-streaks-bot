@@ -7,6 +7,8 @@ import { EmbedBuilder } from 'discord.js';
 
 import { negativeStreakErrorEmbed } from '../prebuiltEmbeds.js';
 
+const { BOT_EMBED_COLOR } = process.env;
+
 export async function SetStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value;
@@ -20,6 +22,7 @@ export async function SetStreakCommand(client, interaction) {
             .setTitle("Error :x:")
             .setDescription(`You don't have a streak named \`${name}\`! Use \`/create\` to create one.`)
             .setTimestamp()
+            .setColor(BOT_EMBED_COLOR)
     
         await interaction.reply({"embeds": [embed], "ephemeral": true});
         return;
@@ -40,6 +43,7 @@ export async function SetStreakCommand(client, interaction) {
         .setTitle("Streak Updated :pencil:")
         .setDescription(`Streak \`${name}\` for ${interaction.user} has been set to \`${newDays}\` days.`)
         .setTimestamp()
+        .setColor(BOT_EMBED_COLOR)
 
     
     await interaction.reply({"embeds": [embed]});

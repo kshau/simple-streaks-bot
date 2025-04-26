@@ -5,6 +5,8 @@ import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
 
+const { BOT_EMBED_COLOR } = process.env;
+
 export async function ViewStreaksCommand(client, interaction) {
 
     const user = interaction.options.getUser("user") || interaction.user;
@@ -21,6 +23,7 @@ export async function ViewStreaksCommand(client, interaction) {
             return { name: doc.name, value: `\`${streakDays}\` days`, inline: true }
         }))
         .setTimestamp()
+        .setColor(BOT_EMBED_COLOR)
 
     
     await interaction.reply({"embeds": [embed]});

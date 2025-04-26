@@ -5,6 +5,8 @@ import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
 
+const { BOT_EMBED_COLOR } = process.env;
+
 export async function DeleteStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value;
@@ -17,6 +19,7 @@ export async function DeleteStreakCommand(client, interaction) {
             .setTitle("Error :x:")
             .setDescription(`You don't have a streak named \`${name}\`!`)
             .setTimestamp()
+            .setColor(BOT_EMBED_COLOR)
     
         await interaction.reply({"embeds": [embed], "ephemeral": true});
         return;
@@ -32,6 +35,7 @@ export async function DeleteStreakCommand(client, interaction) {
         .setTitle("Streak Deleted :wastebasket:")
         .setDescription(`Streak \`${name}\` for ${interaction.user} has been deleted!`)
         .setTimestamp()
+        .setColor(BOT_EMBED_COLOR)
 
     
     await interaction.reply({"embeds": [embed]});
