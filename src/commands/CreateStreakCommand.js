@@ -40,8 +40,8 @@ export async function CreateStreakCommand(client, interaction) {
     })
 
     const embed = new EmbedBuilder()
-        .setTitle("Streak Created :flex:")
-        .setDescription(`Streak \`${name}\` created for ${interaction.user} and is currently set to \`${startingStreak}\` days.`)
+        .setTitle("Streak Created :muscle:")
+        .setDescription(`Streak \`${name}\` created for ${interaction.user} and is currently set to \`${startingDays}\` days.`)
         .setTimestamp()
         .setColor(BOT_EMBED_COLOR)
 
