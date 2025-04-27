@@ -21,7 +21,20 @@ export async function SetGoalCommand(client, interaction) {
     }
 
     if (newGoal < 1) {
-        await interaction.reply({"embeds": [qtyTooLowErrorEmbed("goal", 1)], "ephemeral": true});
+        
+        await database.collection("streaks").findOneAndUpdate({
+            name: streakName, 
+            userId: interaction.user.id
+        }, { $set: { goal: 0 } })
+
+        const embed = new EmbedBuilder()
+            .setTitle("Goal Deleted :wastebasket:")
+            .setDescription(`Goal for streak \`${streakName}\` for ${interaction.user} has been deleted!`)
+            .setTimestamp()
+            .setColor(BOT_EMBED_COLOR)
+    
+        await interaction.reply({"embeds": [embed]});
+
         return;
     }
 
@@ -32,7 +45,7 @@ export async function SetGoalCommand(client, interaction) {
 
     const embed = new EmbedBuilder()
         .setTitle("Goal Updated :pencil:")
-        .setDescription(`Goal for streak \`${streakName}\` for ${interaction.user} has been set to \`${newGoal}\` days.`)
+        .setDescription(`Goal for streak \`${streakName}\` for ${interaction.user} has been set to \`${newGoal}\` days!`)
         .setTimestamp()
         .setColor(BOT_EMBED_COLOR)
     

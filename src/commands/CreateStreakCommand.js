@@ -36,7 +36,7 @@ export async function CreateStreakCommand(client, interaction) {
         name,
         userId: interaction.user.id,
         startTimestamp: Date.now() - startingStreak * 24 * 60 * 60 * 1000,
-        goal: null
+        goal: 0
     })
 
     const embed = new EmbedBuilder()

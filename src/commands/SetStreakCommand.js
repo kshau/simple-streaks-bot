@@ -5,7 +5,7 @@ import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
 
-import { qtyTooLowErrorEmbed } from '../prebuiltEmbeds.js';
+import { errorTitle, qtyTooLowErrorEmbed } from '../prebuiltEmbeds.js';
 
 const { BOT_EMBED_COLOR } = process.env;
 
@@ -19,7 +19,7 @@ export async function SetStreakCommand(client, interaction) {
     if (!existingStreakDoc) {
 
         const embed = new EmbedBuilder()
-            .setTitle("Error :x:")
+            .setTitle(errorTitle)
             .setDescription(`You don't have a streak named \`${name}\`! Use \`/create\` to create one.`)
             .setTimestamp()
             .setColor(BOT_EMBED_COLOR)
