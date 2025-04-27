@@ -10,6 +10,7 @@ import { CreateStreakCommand } from './commands/CreateStreakCommand.js';
 import { ViewStreaksCommand } from './commands/ViewStreaksCommand.js';
 import { SetStreakCommand } from './commands/SetStreakCommand.js';
 import { DeleteStreakCommand } from './commands/DeleteStreakCommand.js';
+import { SetGoalCommand } from './commands/SetGoalCommand.js';
 
 const {BOT_TOKEN} = process.env;
 
@@ -32,7 +33,7 @@ const commands = [
                 "required": true
             }, 
             {
-                "name": "starting-days", 
+                "name": "starting-streak", 
                 "description": "Number of days you already have on streak.", 
                 "type": 4,
                 "required": false
@@ -64,7 +65,7 @@ const commands = [
                 "required": true
             }, 
             {
-                "name": "new-days", 
+                "name": "new-streak", 
                 "description": "New number of days you want to set this streak to.", 
                 "type": 4,
                 "required": true
@@ -84,6 +85,25 @@ const commands = [
             }, 
         ],
         "command": DeleteStreakCommand
+    },
+    {
+        "name": "setgoal", 
+        "description": "Sets a streak goal.", 
+        "options": [
+            {
+                "name": "streak-name", 
+                "description": "Name of streak.", 
+                "type": 3,
+                "required": true
+            }, 
+            {
+                "name": "new-goal", 
+                "description": "Number of days you want the goal to be.", 
+                "type": 4,
+                "required": true
+            }, 
+        ],
+        "command": SetGoalCommand
     },
 ];
 

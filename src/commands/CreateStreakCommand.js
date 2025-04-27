@@ -4,20 +4,20 @@ configDotenv();
 import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
-import { negativeStreakErrorEmbed } from '../prebuiltEmbeds.js';
+import { errorTitle, qtyTooLowErrorEmbed } from '../prebuiltEmbeds.js';
 
 const { BOT_EMBED_COLOR } = process.env;
 
 export async function CreateStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value;
-    const startingDays = interaction.options.get("starting-days")?.value || 0;
+    const startingStreak = interaction.options.get("starting-streak")?.value || 0;
 
     const streakDocWithSameName = await database.collection("streaks").findOne({ name });
 
     if (streakDocWithSameName) {
         const embed = new EmbedBuilder()
-            .setTitle("Error :x:")
+            .setTitle(errorTitle)
             .setDescription(`You already have a streak named \`${name}\`!`)
             .setTimestamp()
             .setColor(BOT_EMBED_COLOR)
@@ -26,8 +26,8 @@ export async function CreateStreakCommand(client, interaction) {
         return;
     }
 
-    if (startingDays < 0) {
-        await interaction.reply({"embeds": [negativeStreakErrorEmbed], "ephemeral": true});
+    if (startingStreak < 0) {
+        await interaction.reply({"embeds": [qtyTooLowErrorEmbed("streak", 0)], "ephemeral": true});
         return;
     }
 
@@ -35,12 +35,13 @@ export async function CreateStreakCommand(client, interaction) {
         id: interaction.id,
         name,
         userId: interaction.user.id,
-        startTimestamp: Date.now() - startingDays * 24 * 60 * 60 * 1000
+        startTimestamp: Date.now() - startingStreak * 24 * 60 * 60 * 1000,
+        goal: null
     })
 
     const embed = new EmbedBuilder()
         .setTitle("Streak Created :flex:")
-        .setDescription(`Streak \`${name}\` created for ${interaction.user} and is currently set to \`${startingDays}\` days.`)
+        .setDescription(`Streak \`${name}\` created for ${interaction.user} and is currently set to \`${startingStreak}\` days.`)
         .setTimestamp()
         .setColor(BOT_EMBED_COLOR)
 

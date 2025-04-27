@@ -11,9 +11,9 @@ export async function DeleteStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value;
 
-    const streakDocWithSameName = await database.collection("streaks").findOne({ name });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name });
 
-    if (!streakDocWithSameName) {
+    if (!existingStreakDoc) {
 
         const embed = new EmbedBuilder()
             .setTitle("Error :x:")

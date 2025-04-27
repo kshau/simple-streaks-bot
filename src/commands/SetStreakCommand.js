@@ -5,18 +5,18 @@ import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
 
-import { negativeStreakErrorEmbed } from '../prebuiltEmbeds.js';
+import { qtyTooLowErrorEmbed } from '../prebuiltEmbeds.js';
 
 const { BOT_EMBED_COLOR } = process.env;
 
 export async function SetStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value;
-    const newDays = interaction.options.get("new-days").value;
+    const newStreak = interaction.options.get("new-streak").value;
 
-    const streakDocWithSameName = await database.collection("streaks").findOne({ name });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name });
 
-    if (!streakDocWithSameName) {
+    if (!existingStreakDoc) {
 
         const embed = new EmbedBuilder()
             .setTitle("Error :x:")
@@ -29,19 +29,19 @@ export async function SetStreakCommand(client, interaction) {
 
     }
 
-    if (newDays < 0) {
-        await interaction.reply({"embeds": [negativeStreakErrorEmbed], "ephemeral": true});
+    if (newStreak < 0) {
+        await interaction.reply({"embeds": [qtyTooLowErrorEmbed], "ephemeral": true});
         return;
     }
 
     await database.collection("streaks").findOneAndUpdate({
         name, 
         userId: interaction.user.id
-    }, { $set: { startTimestamp: Date.now() - newDays * 24 * 60 * 60 * 1000 } })
+    }, { $set: { startTimestamp: Date.now() - newStreak * 24 * 60 * 60 * 1000 } })
 
     const embed = new EmbedBuilder()
         .setTitle("Streak Updated :pencil:")
-        .setDescription(`Streak \`${name}\` for ${interaction.user} has been set to \`${newDays}\` days.`)
+        .setDescription(`Streak \`${name}\` for ${interaction.user} has been set to \`${newStreak}\` days.`)
         .setTimestamp()
         .setColor(BOT_EMBED_COLOR)
 
