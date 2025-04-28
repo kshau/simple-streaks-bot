@@ -16,6 +16,7 @@ export async function CreateStreakCommand(client, interaction) {
     const streakDocWithSameName = await database.collection("streaks").findOne({ name });
 
     if (streakDocWithSameName) {
+
         const embed = new EmbedBuilder()
             .setTitle(errorTitle)
             .setDescription(`You already have a streak named \`${name}\`!`)
@@ -41,7 +42,7 @@ export async function CreateStreakCommand(client, interaction) {
 
     const embed = new EmbedBuilder()
         .setTitle("Streak Created :muscle:")
-        .setDescription(`Streak \`${name}\` created for ${interaction.user} and is currently set to \`${startingDays}\` days.`)
+        .setDescription(`Streak \`${name}\` created for ${interaction.user} and is currently set to \`${startingStreak}\` days.`)
         .setTimestamp()
         .setColor(BOT_EMBED_COLOR)
 
