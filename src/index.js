@@ -1,7 +1,7 @@
 import { configDotenv } from 'dotenv';
 configDotenv();
 
-import { Client, GatewayIntentBits, Events } from 'discord.js';
+import { Client, GatewayIntentBits, Events, ActivityType } from 'discord.js';
 
 import { registerCommands } from './registerCommands.js';
 import database from "./database.js";
@@ -110,7 +110,16 @@ const commands = [
 registerCommands(commands);
 
 client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+
+    client.user.setPresence({
+        activities: [{
+            type: ActivityType.Custom, 
+            name: "Lock in."
+        }]
+    })
+
+    console.log(`Logged in as ${client.user.tag}!`);
+
 });
 
 client.on("interactionCreate", async interaction => {
