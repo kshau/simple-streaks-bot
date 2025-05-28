@@ -4,6 +4,7 @@ configDotenv();
 import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
+import { caseInsensitiveQueryValue } from '../utils.js';
 
 const { BOT_EMBED_COLOR } = process.env;
 
@@ -11,7 +12,7 @@ export async function DeleteStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value;
 
-    const existingStreakDoc = await database.collection("streaks").findOne({ name });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name: caseInsensitiveQueryValue(name) });
 
     if (!existingStreakDoc) {
 
@@ -28,12 +29,12 @@ export async function DeleteStreakCommand(client, interaction) {
 
     await database.collection("streaks").findOneAndDelete({
         userId: interaction.user.id, 
-        name
+        name: caseInsensitiveQueryValue(name)
     })
 
     const embed = new EmbedBuilder()
         .setTitle("Streak Deleted :wastebasket:")
-        .setDescription(`Streak \`${name}\` for ${interaction.user} has been deleted!`)
+        .setDescription(`Streak \`${existingStreakDoc.name}\` for ${interaction.user} has been deleted!`)
         .setTimestamp()
         .setColor(BOT_EMBED_COLOR)
 

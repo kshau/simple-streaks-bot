@@ -6,6 +6,7 @@ import database from "../database.js";
 import { EmbedBuilder } from 'discord.js';
 
 import { errorTitle, qtyTooLowErrorEmbed } from '../prebuiltEmbeds.js';
+import { caseInsensitiveQueryValue } from '../utils.js';
 
 const { BOT_EMBED_COLOR } = process.env;
 
@@ -14,7 +15,7 @@ export async function SetStreakCommand(client, interaction) {
     const name = interaction.options.get("name").value;
     const newStreak = interaction.options.get("new-streak").value;
 
-    const existingStreakDoc = await database.collection("streaks").findOne({ name });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name: caseInsensitiveQueryValue(name) });
 
     if (!existingStreakDoc) {
 
@@ -35,13 +36,13 @@ export async function SetStreakCommand(client, interaction) {
     }
 
     await database.collection("streaks").findOneAndUpdate({
-        name, 
+        name: caseInsensitiveQueryValue(name), 
         userId: interaction.user.id
     }, { $set: { startTimestamp: Date.now() - newStreak * 24 * 60 * 60 * 1000 } })
 
     const embed = new EmbedBuilder()
         .setTitle("Streak Updated :pencil:")
-        .setDescription(`Streak \`${name}\` for ${interaction.user} has been set to \`${newStreak}\` days.`)
+        .setDescription(`Streak \`${existingStreakDoc.name}\` for ${interaction.user} has been set to \`${newStreak}\` days.`)
         .setTimestamp()
         .setColor(BOT_EMBED_COLOR)
 

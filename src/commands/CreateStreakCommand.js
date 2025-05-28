@@ -5,6 +5,7 @@ import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
 import { errorTitle, qtyTooLowErrorEmbed } from '../prebuiltEmbeds.js';
+import { caseInsensitiveQueryValue } from '../utils.js';
 
 const { BOT_EMBED_COLOR } = process.env;
 
@@ -13,13 +14,13 @@ export async function CreateStreakCommand(client, interaction) {
     const name = interaction.options.get("name").value;
     const startingStreak = interaction.options.get("starting-streak")?.value || 0;
 
-    const streakDocWithSameName = await database.collection("streaks").findOne({ name });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name: caseInsensitiveQueryValue(name) });
 
-    if (streakDocWithSameName) {
+    if (existingStreakDoc) {
 
         const embed = new EmbedBuilder()
             .setTitle(errorTitle)
-            .setDescription(`You already have a streak named \`${name}\`!`)
+            .setDescription(`You already have a streak named \`${existingStreakDoc.name}\`!`)
             .setTimestamp()
             .setColor(BOT_EMBED_COLOR)
     
@@ -34,7 +35,7 @@ export async function CreateStreakCommand(client, interaction) {
 
     await database.collection("streaks").insertOne({
         id: interaction.id,
-        name,
+        name: caseInsensitiveQueryValue(name),
         userId: interaction.user.id,
         startTimestamp: Date.now() - startingStreak * 24 * 60 * 60 * 1000,
         goal: 0
