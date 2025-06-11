@@ -13,7 +13,7 @@ export async function SetGoalCommand(client, interaction) {
     const streakName = interaction.options.get("streak-name").value.toLowerCase().trim();
     const newGoal = interaction.options.get("new-goal").value;
 
-    const existingStreakDoc = await database.collection("streaks").findOne({ name: streakName });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name: streakName, userId: interaction.user.id });
 
     if (!existingStreakDoc) {
         await interaction.reply({"embeds": [streakDoesntExistErrorEmbed(streakName)], "ephemeral": true});
