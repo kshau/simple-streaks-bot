@@ -9,7 +9,7 @@ const { BOT_EMBED_COLOR } = process.env;
 
 export async function DeleteStreakCommand(client, interaction) {
     
-    const name = interaction.options.get("name").value.lowerCase().trim();
+    const name = interaction.options.get("name").value.toLowerCase().trim();
 
     const existingStreakDoc = await database.collection("streaks").findOne({ name });
 
