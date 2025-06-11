@@ -13,9 +13,9 @@ export async function CreateStreakCommand(client, interaction) {
     const name = interaction.options.get("name").value.toLowerCase().trim();
     const startingStreak = interaction.options.get("starting-streak")?.value || 0;
 
-    const streakDocWithSameName = await database.collection("streaks").findOne({ name, userId: interaction.user.id });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name, userId: interaction.user.id });
 
-    if (streakDocWithSameName) {
+    if (existingStreakDoc) {
 
         const embed = new EmbedBuilder()
             .setTitle(errorTitle)
