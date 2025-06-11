@@ -14,7 +14,7 @@ export async function SetStreakCommand(client, interaction) {
     const name = interaction.options.get("name").value.toLowerCase().trim();
     const newStreak = interaction.options.get("new-streak").value;
 
-    const existingStreakDoc = await database.collection("streaks").findOne({ name });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name, userId: interaction.user.id });
 
     if (!existingStreakDoc) {
 
