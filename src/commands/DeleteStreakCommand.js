@@ -11,7 +11,7 @@ export async function DeleteStreakCommand(client, interaction) {
     
     const name = interaction.options.get("name").value.toLowerCase().trim();
 
-    const existingStreakDoc = await database.collection("streaks").findOne({ name });
+    const existingStreakDoc = await database.collection("streaks").findOne({ name, userId: interaction.user.id });
 
     if (!existingStreakDoc) {
 
