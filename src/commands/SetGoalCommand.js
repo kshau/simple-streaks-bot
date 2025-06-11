@@ -4,13 +4,13 @@ configDotenv();
 import database from "../database.js";
 
 import { EmbedBuilder } from 'discord.js';
-import { qtyTooLowErrorEmbed, streakDoesntExistErrorEmbed } from '../prebuiltEmbeds.js';
+import { streakDoesntExistErrorEmbed } from '../prebuiltEmbeds.js';
 
 const { BOT_EMBED_COLOR } = process.env;
 
 export async function SetGoalCommand(client, interaction) {
     
-    const streakName = interaction.options.get("streak-name").value;
+    const streakName = interaction.options.get("streak-name").value.lowerCase().trim();
     const newGoal = interaction.options.get("new-goal").value;
 
     const existingStreakDoc = await database.collection("streaks").findOne({ name: streakName });

@@ -11,7 +11,7 @@ const { BOT_EMBED_COLOR } = process.env;
 
 export async function SetStreakCommand(client, interaction) {
     
-    const name = interaction.options.get("name").value;
+    const name = interaction.options.get("name").value.lowerCase().trim();
     const newStreak = interaction.options.get("new-streak").value;
 
     const existingStreakDoc = await database.collection("streaks").findOne({ name });
