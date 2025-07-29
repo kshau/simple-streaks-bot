@@ -142,12 +142,20 @@ client.on("interactionCreate", async interaction => {
 
 });
 
-client.on(Events.ShardError, error => {
-	console.error('A websocket connection encountered an error:', error);
+client.on(Events.Error, (error) => {
+    console.error('[Client Error]', error);
 });
 
-process.on('unhandledRejection', error => {
-	console.error('Unhandled promise rejection:', error);
+client.on(Events.ShardError, (error, shardId) => {
+    console.error(`[Shard ${shardId} WebSocket Error]`, error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('[Unhandled Promise Rejection]', reason);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error('[Uncaught Exception]', error);
 });
 
 client.login(BOT_TOKEN);
